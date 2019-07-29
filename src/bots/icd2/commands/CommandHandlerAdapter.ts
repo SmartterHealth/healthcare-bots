@@ -42,8 +42,6 @@ export class CommandHandlerAdapter {
 
         // Execute the command.
         await cmd.execute(context, commandAlias.toLowerCase().trim(), (args).trim());
-
-        await context.sendActivity(`You said: ${commandAlias}`)
     
     }
 

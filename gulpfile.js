@@ -13,19 +13,15 @@ const clean = (done) => {
 }
 exports.clean = clean;
 
-const copyJson = (done) => {
-    return gulp.src(['./src/**/*.json'])
-        .pipe(gulp.dest('./lib'));
-}
-
-const copyMisc = (done) => {
+const copy = (done) => {
     return gulp.src([
+        './src/**/*.json',
         './web.config',
         './deploy.cmd',
         '.env'
     ]).pipe(gulp.dest('./lib'));
 }
-exports.copy = gulp.series(copyMisc, copyJson);
+exports.copy = copy;
 
 const tsc = (done) => {
     const cmd = path.resolve('node_modules', '.bin', 'tsc');
@@ -42,7 +38,7 @@ exports.tsc = tsc;
 exports.tsc.description = 'Runs the TypeScript compiler against the project.';
 
 
-const build = gulp.series(tsc, exports.copy);
+const build = gulp.series(tsc, copy);
 exports.build = build;
 exports.build.description = 'Builds the project.';
 
