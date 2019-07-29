@@ -6,7 +6,7 @@ const nodemon = require('gulp-nodemon');
 const zip = require('gulp-zip');
 const argv = require('yargs').argv;
 
-process.env.NODE_ENV = (argv.production) ? 'PRODUCTION' : 'DEVELOPMENT';
+//process.env.NODE_ENV = (argv.production) ? 'PRODUCTION' : 'DEVELOPMENT';
 
 const clean = (done) => {
     return del(['./lib'])
@@ -38,7 +38,7 @@ exports.build = build;
 exports.build.description = 'Builds the project.';
 
 const watch = (done) => {
-    return gulp.watch(['./src/**/*.*'], gulp.series(build))
+    return gulp.watch(['./src/**/*.*', './gulpfile.js', './**/*.env'], gulp.series(build))
 }
 exports.watch = watch;
 exports.watch.description = 'Watches the project for changes, and then runs the build.';

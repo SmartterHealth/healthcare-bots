@@ -3,6 +3,9 @@
   "version": "0.1.1",
   "description": "",
   "main": "index.js",
+  "config": {
+    "NODE_ENV": "production"
+  },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
