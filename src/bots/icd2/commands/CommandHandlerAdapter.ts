@@ -1,8 +1,6 @@
 import { TurnContext } from 'botbuilder';
 import 'reflect-metadata';
 import { Command, CommandHandlerBase } from './CommandHandlerBase';
-
-
 export class CommandHandlerAdapter {
 
     /** Private field that stores a list of all known command handler types. */
