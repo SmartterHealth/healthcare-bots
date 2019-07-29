@@ -25,8 +25,11 @@
     "yargs": "^13.3.0"
   },
   "dependencies": {
-    "botbuilder": "^4.5.3",
+    "applicationinsights": "^1.4.0",
+    "botbuilder": "4.4.0",
     "botbuilder-ai": "^4.5.3",
+    "mssql": "^5.1.0",
+    "reflect-metadata": "^0.1.13",
     "restify": "^8.3.3"
   }
 }

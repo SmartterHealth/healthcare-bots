@@ -11,20 +11,29 @@ const argv = require('yargs').argv;
 const clean = (done) => {
     return del(['./lib'])
 }
+exports.clean = clean;
 
-const copy = (done) => {
+const copyJson = (done) => {
+    return gulp.src(['./src/**/*.json'])
+        .pipe(gulp.dest('./lib'));
+}
+
+const copyMisc = (done) => {
     return gulp.src([
         './web.config',
         './deploy.cmd',
         '.env'
     ]).pipe(gulp.dest('./lib'));
 }
-exports.copy = copy;
+exports.copy = gulp.series(copyMisc, copyJson);
 
 const tsc = (done) => {
     const cmd = path.resolve('node_modules', '.bin', 'tsc');
+    return exec(cmd);
+
     exec(cmd, (err, stdout, stderr) => {
-        console.log((err) ? stderr: stdout.trim());
+        if(stderr) console.log(stderr);
+        if(err) throw err;
         done();
     });
 }
@@ -33,7 +42,7 @@ exports.tsc = tsc;
 exports.tsc.description = 'Runs the TypeScript compiler against the project.';
 
 
-const build = gulp.series(tsc, copy);
+const build = gulp.series(tsc, exports.copy);
 exports.build = build;
 exports.build.description = 'Builds the project.';
 

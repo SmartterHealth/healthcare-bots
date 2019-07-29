@@ -1,0 +1,110 @@
+{
+	"type": "Container",
+	"items": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"weight": "bolder",
+							"text": "Code:"
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "[CODE]"
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"weight": "bolder",
+							"text": "Description:"
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "[DESCRIPTION]"
+						}
+					],
+					"width": "stretch"
+				}
+			]
+        },
+        {
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"weight": "bolder",
+							"text": "Chapter:"
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "[CHAPTER]"
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"weight": "bolder",
+							"text": "Is Billable?"
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "[BILLABLE]"
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		}
+	]
+}
+

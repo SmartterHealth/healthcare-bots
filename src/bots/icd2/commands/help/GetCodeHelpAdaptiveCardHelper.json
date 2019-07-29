@@ -1,0 +1,22 @@
+{
+    "type": "Container",
+    "items": [
+        {
+            "type": "TextBlock",
+            "text": "Get details for codes using the command **get code**, then specifying the ICD10 code:",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "color": "Accent",
+            "text": "\tget code H0522",
+            "isSubtle": true,
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "**Tip:** Use the alias *gc* in place of the *get code* command as a shortcut.",
+            "wrap": true
+        }
+    ]
+}

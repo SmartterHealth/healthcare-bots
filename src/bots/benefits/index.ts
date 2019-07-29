@@ -28,7 +28,7 @@ export default class BenefitsBot extends ActivityHandler {
 	}
 
     /**
-     * Initialize the QNA maker instance.
+     * Initialize the QNA maker instance. 
      */
 	private initQnAMaker() {
 		

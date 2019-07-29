@@ -26,8 +26,8 @@ server.listen(settings.bots.port, () => {
 const initializeBots = () => {
 
     try {
-        const icd2 = new Icd2Bot('' + server);
-        console.log('\t* Benefits bot is up and running!');
+        const icd2 = new Icd2Bot(server);
+        console.log('\t* ICD2 bot is up and running!');
     } catch (err) {
         console.error(`ERROR: Could not start Icd2Bot: ${err}\n`)
     }
