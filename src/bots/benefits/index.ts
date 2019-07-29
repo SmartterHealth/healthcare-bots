@@ -67,13 +67,13 @@ export default class BenefitsBot extends ActivityHandler {
      */
     private async handleError(context: TurnContext, error: Error): Promise<void> {
         // This check writes out errors to console log .vs. app insights.
-			console.error(`\n [onTurnError]: ${(error)}. ${error.stack}`);
-            
-            if(process.env.NODE_ENV === 'DEVELOPMENT') {
-                await context.sendActivity(`Apologies, but Something went wrong. Please contact your system administrator.`);
-            } else {
-                await context.sendActivity(`Apologies, but Something went wrong. Please contact your system administrator.`);
-            }
+        console.error(`\n [onTurnError]: ${(error)}. ${error.stack}`);
+        
+        if(process.env.NODE_ENV === 'DEVELOPMENT') {
+            await context.sendActivity(`ERROR: ${error}\n${error.stack}`);
+        } else {
+            await context.sendActivity(`Apologies, but Something went wrong. Please contact your system administrator.`);
+        }
     }
 
     /**
