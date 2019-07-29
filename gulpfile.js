@@ -15,7 +15,8 @@ const clean = (done) => {
 const copy = (done) => {
     return gulp.src([
         './web.config',
-        './deploy.cmd'
+        './deploy.cmd',
+        '.env'
     ]).pipe(gulp.dest('./lib'));
 }
 exports.copy = copy;
@@ -67,4 +68,4 @@ const package = (done) => {
     .pipe(gulp.dest('deployment/package'))
 }
 
-exports.package = gulp.series(clean, package);
+exports.package = gulp.series(build, package);
