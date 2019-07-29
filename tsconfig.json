@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "target": "es2017",
+        "module": "commonjs",
+        "sourceMap": true,
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "strictNullChecks": true,
+    },
+    "include": [
+        "./src/**/*.ts*/"
+    ]
+}
