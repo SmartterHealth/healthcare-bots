@@ -1,14 +1,15 @@
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
-import { ActivityHandler, BotFrameworkAdapter, TurnContext } from "botbuilder";
-import settings from "./settings";
-const { QnAMaker } = require("botbuilder-ai");
+import { ActivityHandler, BotFrameworkAdapter, TurnContext } from 'botbuilder';
+import { QnAMaker } from 'botbuilder-ai';
+import { Assert } from '../icd2/assert';
+import settings from './settings';
 
 export default class BenefitsBot extends ActivityHandler {
 
     /** Reference to a BotFrameworkAdapter instance. */
     private adapter: BotFrameworkAdapter;
-    
+
     /** Reference to a QnAMaker instance. */
 	private qnaMaker: any;
 
@@ -28,14 +29,19 @@ export default class BenefitsBot extends ActivityHandler {
 	}
 
     /**
-     * Initialize the QNA maker instance. 
+     * Initialize the QNA maker instance.
      */
 	private initQnAMaker() {
-		
+
+        const { QnAKnowledgebaseId, QnAEndpointKey, QnAEndpointHostName } = settings.bot;
+        Assert.isNotNullOrBlank(QnAKnowledgebaseId, 'env.QnAKnowledgebaseId');
+        Assert.isNotNullOrBlank(QnAEndpointKey, 'env.QnAEndpointKey');
+        Assert.isNotNullOrBlank(QnAEndpointHostName, 'env.QnAEndpointHostName');
+
         this.qnaMaker = new QnAMaker({
-            knowledgeBaseId: settings.bot.QnAKnowledgebaseId,
-            endpointKey: settings.bot.QnAEndpointKey,
-            host: settings.bot.QnAEndpointHostName,
+            knowledgeBaseId: QnAKnowledgebaseId as string,
+            endpointKey: QnAEndpointKey as string,
+            host: QnAEndpointHostName as string,
         });
 	}
 
@@ -44,19 +50,27 @@ export default class BenefitsBot extends ActivityHandler {
      * @param server The HTTP server instance that is hosting the bot.
      */
 	private initAdapter(server: any) {
-		this.adapter = new BotFrameworkAdapter({
+
+        const { MicrosoftAppId, MicrosoftAppPassword } = settings.bot;
+
+        Assert.isNotNullOrBlank(MicrosoftAppId, 'env.MicrosoftAppId');
+        Assert.isNotNullOrBlank(MicrosoftAppPassword, 'env.MicrosoftAppPassword');
+
+        this.adapter = new BotFrameworkAdapter({
 			appId: settings.bot.MicrosoftAppId,
 			appPassword: settings.bot.MicrosoftAppPassword,
         });
-        
-		server.post("/api/benefits/messages", (req, res) => {
-			this.adapter.processActivity(req, res, async context => {
+
+        // tslint:disable-next-line: align
+		server.post('/api/benefits/messages', (req, res) => {
+			this.adapter.processActivity(req, res, async (context) => {
 				// Route to main dialog.
 				await this.run(context);
 			});
         });
-        
-		// Catch-all for errors.
+
+        // Catch-all for errors.
+		// tslint:disable-next-line: align
 		this.adapter.onTurnError = async (context, error) => this.handleError(context, error);
 	}
 
@@ -68,8 +82,8 @@ export default class BenefitsBot extends ActivityHandler {
     private async handleError(context: TurnContext, error: Error): Promise<void> {
         // This check writes out errors to console log .vs. app insights.
         console.error(`\n [onTurnError]: ${(error)}. ${error.stack}`);
-        
-        if(process.env.NODE_ENV === 'DEVELOPMENT') {
+
+        if (process.env.NODE_ENV === 'DEVELOPMENT') {
             await context.sendActivity(`ERROR: ${error}\n${error.stack}`);
         } else {
             await context.sendActivity(`Apologies, but Something went wrong. Please contact your system administrator.`);
@@ -86,8 +100,8 @@ export default class BenefitsBot extends ActivityHandler {
 		if (membersAdded != null) {
 			for (const member of membersAdded) {
 				if (member.id !== context.activity.recipient.id) {
-                    await context.sendActivity("Benefits Bot: Hello and welcome!");
-                    console.log(this.qnaMaker)
+                    await context.sendActivity('Benefits Bot: Hello and welcome!');
+                    console.log(this.qnaMaker);
 				}
 			}
 		}
@@ -101,20 +115,20 @@ export default class BenefitsBot extends ActivityHandler {
      * @param next Callback Promise that lets the adapter know we are finished processing the message.
      */
 	private async handleOnMessage(context: TurnContext, next: () => Promise<void>): Promise<any> {
-        console.log("Calling QnA Maker");
-    
-		const qnaResults = await this.qnaMaker.getAnswers(context);
+        console.log('Calling QnA Maker');
+
+		      const qnaResults = await this.qnaMaker.getAnswers(context);
 
 		// If an answer was received from QnA Maker, send the answer back to the user.
-		if (qnaResults[0]) {
+		      if (qnaResults[0]) {
 			await context.sendActivity(qnaResults[0].answer);
 
 			// If no answers were returned from QnA Maker, reply with help.
 		} else {
-			await context.sendActivity("No QnA Maker answers were found.");
+			await context.sendActivity('No QnA Maker answers were found.');
 		}
 
 		// By calling next() you ensure that the next BotHandler is run.
-		await next();
+		      await next();
 	}
 }

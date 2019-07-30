@@ -9,8 +9,8 @@ export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
     private _dataSource: IICD10SearchResults | null;
 
     constructor(context) {
-        console.log('constructor')
         super(context);
+        let template = SearchCodesAdaptiveCardHelper.loadCardElementJSON(path.join(__dirname, './SearchCodesAdaptiveCardHelper.json'));
     }
 
     public get dataSource(): IICD10SearchResults | null {
@@ -29,8 +29,8 @@ export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
     private renderSearchResults() {
         if (this.dataSource != null) {
             this.dataSource.codes.map((result) => {
-                let template = SearchCodesAdaptiveCardHelper.loadCardElementJSON(path.join(__dirname, './SearchCodesAdaptiveCardHelper.json'));
-                let root = template.items[0];
+                const template = SearchCodesAdaptiveCardHelper.loadCardElementJSON(path.join(__dirname, './SearchCodesAdaptiveCardHelper.json'));
+                const root = template.items[0];
                 root.columns[0].items[0].text = result.code;
                 root.columns[1].items[0].text = result.description;
                 root.selectAction = this.createAction({ title: result.code, actionType: CardActionType.Submit, data: `get code ${result.code}` });

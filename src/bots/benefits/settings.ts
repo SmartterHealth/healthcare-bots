@@ -16,7 +16,7 @@ const settings = {
         /** The password/secret needed to connect to your QnA Maker Knowledge Base. You can get this in the Azure Portal. */
         QnAEndpointKey: process.env['benefits.QnAEndpointKey'],
         /** The host name of the QnA Maker Knowledge Base registered in Azure. You can get this value from https://www.qnamaker.ai/Home/MyServices */
-        QnAEndpointHostName: process.env['benefits.QnAEndpointHostName']
+        QnAEndpointHostName: process.env['benefits.QnAEndpointHostName'],
     }
 }
 

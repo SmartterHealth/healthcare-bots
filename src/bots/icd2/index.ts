@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
+import * as appInsights from 'applicationinsights';
 import { ActivityHandler, BotFrameworkAdapter, TurnContext } from 'botbuilder';
+import * as path from 'path';
 import { CommandHandlerAdapter } from './commands/CommandHandlerAdapter';
 import { GetCodeCommandHandler } from './commands/get-code/GetCodeCommandHandler';
 import { HelpCommandHandler } from './commands/help/HelpCommandHandler';
 import { SearchCodesCommandHandler } from './commands/search-codes/SearchCodesCommandHandler';
-import * as appInsights from 'applicationinsights';
 import log from './logger';
 import settings from './settings';
 
-//import { log } from './logger';
+// import { log } from './logger';
 import { WelcomeCommandHandler } from './commands/welcome/WelcomeCommandHandler';
 appInsights.setup(settings.appInsights.instrumentationKey)
     .setAutoDependencyCorrelation(true)
@@ -30,7 +30,7 @@ const botCommandAdapter = new CommandHandlerAdapter([
     SearchCodesCommandHandler,
     GetCodeCommandHandler,
     HelpCommandHandler,
-    WelcomeCommandHandler
+    WelcomeCommandHandler,
 ]);
 
 export default class Icd2Bot extends ActivityHandler {
@@ -38,12 +38,12 @@ export default class Icd2Bot extends ActivityHandler {
     private adapter: BotFrameworkAdapter;
 
     constructor(server: any) {
-        
+
         super();
 
         this.adapter = new BotFrameworkAdapter({
             appId: settings.bot.MicrosoftAppId,
-            appPassword: settings.bot.MicrosoftAppPassword
+            appPassword: settings.bot.MicrosoftAppPassword,
         });
 
         server.post('/api/icd2/messages', (req, res) => {
@@ -66,8 +66,6 @@ export default class Icd2Bot extends ActivityHandler {
             try {
                 let commandText = context.activity.text;
 
-               
-
                 // MS Teams sends SubmitActions differently then other chat clients :-/
                 if ((!commandText) && context.activity.value && context.activity.value.msteams) {
                     commandText = context.activity.value.msteams.text;
@@ -76,22 +74,23 @@ export default class Icd2Bot extends ActivityHandler {
                 this.setUserId(context);
 
                 // Execute the command via the command adapter, which will dispatch to the appropriate command handler.
-                console.time('botCommandAdapter.execute')
+                console.time('botCommandAdapter.execute');
                 await botCommandAdapter.execute(context, commandText.trim());
-                
-            } catch (err) {
-                console.log(err);
+
+            } catch (e) {
+                const err: Error = e;
+                console.error(err);
             } finally {
                 // By calling next() you ensure that the next BotHandler is run.
-                console.timeEnd('botCommandAdapter.execute')
+                console.timeEnd('botCommandAdapter.execute');
                 await next();
             }
-        
+
         });
 
         this.onMembersAdded(async (context, next) => {
             const membersAdded = context.activity.membersAdded;
-            if(membersAdded != null) {
+            if (membersAdded != null) {
                 for (const member of membersAdded) {
                     if (member.id !== context.activity.recipient.id) {
                         log(`User ${context.activity.from.name} added to chat session.`);

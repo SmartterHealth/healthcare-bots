@@ -1,12 +1,12 @@
 import { TurnContext } from 'botbuilder';
 import * as sql from 'mssql';
 import 'reflect-metadata';
+import { Assert } from '../../assert';
 import log from '../../logger';
 import settings from '../../settings';
-import { Command, CommandHandlerBase, Traceable, ICommandResults, CommandStatus } from '../CommandHandlerBase';
+import { Command, CommandHandlerBase, CommandStatus, ICommandResults, Traceable } from '../CommandHandlerBase';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
-import { Assert } from '../../assert';
 
 /**
  * Simple flag that indicates whether this is the default command.
@@ -31,7 +31,7 @@ export class SearchCodesCommandHandler extends CommandHandlerBase {
             results = await searchCodes(query);
             log(`${results.codes.length} results returned for query '${query}'`);
 
-            if(results.codes.length > 0) {
+            if (results.codes.length > 0) {
                 // We got matches!
                 cmdStatus = CommandStatus.Success;
                 cmdStatusText = `Your search for **'${args}'** returned **${results.codes.length}** results. Click on a result for more details.`;
@@ -45,7 +45,7 @@ export class SearchCodesCommandHandler extends CommandHandlerBase {
             cmdStatus = CommandStatus.Error;
             cmdStatusText = err.toString();
         }
-        
+
         const card = new SearchCodesAdaptiveCardHelper(context);
         card.args = args;
         card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
@@ -53,10 +53,10 @@ export class SearchCodesCommandHandler extends CommandHandlerBase {
         card.headerDescription = (cmdStatus === CommandStatus.Error) ? `An error has occured. Please contact your administrator.` : cmdStatusText;
         card.dataSource = results;
 
-        //await context.sendActivity('Test');
+        // await context.sendActivity('Test');
         await context.sendActivity({
-            attachments: [card.render()], 
-        });       
+            attachments: [card.render()],
+        });
 
         return { status: cmdStatus, message: cmdStatusText};
     }
@@ -67,10 +67,10 @@ export class SearchCodesCommandHandler extends CommandHandlerBase {
  * @param keywords The keywords to parse. Each keyword is joined by the SQL 'AND' operator. Phrases are identified by quotes.
  */
 function parseKeywords(keywords: string): string  {
-    Assert.isNotNull<String>(keywords, String)
+    Assert.isNotNull<String>(keywords, String);
     const regex = /("(.*)")|[^\W\d]+[\u00C0-\u017Fa-zA-Z'](\w|[-'](?=\w))*("(.*)")|[^\W\d]+[\u00C0-\u017Fa-zA-Z'](\w|[-'](?=\w))*/gi;
     const tokens = keywords.match(regex);
-    if(tokens != null) {
+    if (tokens != null) {
         return tokens.join(' AND ');
     }
     return '';
@@ -81,7 +81,7 @@ function parseKeywords(keywords: string): string  {
  * @param query The SQL fulltext WHERE clause.
  */
 async function searchCodes(query: string): Promise<IICD10SearchResults> {
-    Assert.isNotNull<String>(query, String)
+    Assert.isNotNull<string>(query, String);
     const codes: IICD10Code[] = [];
     const results: IICD10SearchResults = { codes: (codes) };
     const pool = await sql.connect(settings.db);
@@ -94,10 +94,7 @@ async function searchCodes(query: string): Promise<IICD10SearchResults> {
 
         results.codes = dbresults.recordset as IICD10Code[];
 
-    } catch (err) {
-        throw err;
-    }
-    finally {
+    } finally {
         sql.close();
     }
 

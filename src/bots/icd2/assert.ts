@@ -7,4 +7,16 @@ export class Assert {
             throw new Error(`Argument of type '${x.name}' cannot be null!`);
         }
     }
+
+    public static isNotNullOrBlank<T>(value: T, name?: string) {
+        if (value === null || value === undefined) {
+            throw new Error(`Value '${name}' cannot be null!`);
+        }
+
+        if (typeof value === 'string') {
+            if ((value + '').trim().length === 0) {
+                throw new Error(`Value '${name}' cannot be null!`);
+            }
+        }
+    }
 }

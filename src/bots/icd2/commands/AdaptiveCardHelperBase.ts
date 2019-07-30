@@ -1,26 +1,12 @@
-import { TurnContext, Attachment } from 'botbuilder';
-import { Assert } from "../assert";
+import { Attachment, TurnContext } from 'botbuilder';
 import * as path from 'path';
-import { type } from "os";
+import { Assert } from '../assert';
 
 export abstract class AdaptiveCardHelperBase {
-    
-    constructor(context: TurnContext) {
-        
-        Assert.isNotNull<TurnContext>(context, TurnContext);
-        this.context = context;
-        console.log(__dirname)
-    }
-
-    
-
-    private _card = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './AdaptiveCardTemplate.json'));
 
     protected get card() {
         return this._card;
     }
-
-    private _args: string;
 
     public get args(): string {
         return this._args;
@@ -29,8 +15,6 @@ export abstract class AdaptiveCardHelperBase {
     public set args(value: string) {
         this._args = value;
     }
-
-    private _context: TurnContext;
 
     public get context(): TurnContext {
         return this._context;
@@ -54,23 +38,41 @@ export abstract class AdaptiveCardHelperBase {
     }
 
     public get isMSTeams(): boolean {
-        return (this.context != null && this.context.activity.channelId != null && this.context.activity.channelId != undefined && this.context.activity.channelId === 'msteams')
+        return (this.context != null && this.context.activity.channelId != null && this.context.activity.channelId !== undefined && this.context.activity.channelId === 'msteams');
     }
+
+    public static loadCardElementJSON(pathToTemplate: string): any {
+        const template = (require(pathToTemplate));
+        return JSON.parse(JSON.stringify(template));
+    }
+
+    private _card;
+    private _args: string;
+    private _context: TurnContext;
+
+    constructor(context: TurnContext) {
+
+        Assert.isNotNull<TurnContext>(context, TurnContext);
+        this._context = context;
+        this._card = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './AdaptiveCardTemplate.json'));
+    }
+
+    public abstract render(): Attachment;
 
     protected createAction(options: ICardAction) {
 
-        let action = Object.assign({}, options);
-        action['type'] = `Action.${CardActionType[options.actionType]}`;
+        const action = Object.assign({}, options);
+        action.type = `Action.${CardActionType[options.actionType]}`;
 
-        if(this.isMSTeams == true) {
+        if (this.isMSTeams === true) {
             action.data = {
                 msteams: {
-                    "type": "messageBack",
-                    "text": options.data,
-                    "displayText": options.data,
-                    "value": options.data
-                }
-            }
+                    type: 'messageBack',
+                    text: options.data,
+                    displayText: options.data,
+                    value: options.data,
+                },
+            };
         }
 
         return action;
@@ -78,33 +80,25 @@ export abstract class AdaptiveCardHelperBase {
 
     protected submitAction(data: any, text?: string, displayText?: string) {
 
-        let action = {
+        const action = {
             type: 'Action.Submit',
-            text: text,
-            data: data
-        }
+            text,
+            data,
+        };
 
-        if(this.isMSTeams == true) {
+        if (this.isMSTeams === true) {
             action.data = {
                 msteams: {
-                    "type": "messageBack",
-                    "text": text,
-                    "displayText": displayText,
-                    "value": data
-                }
-            }
+                    type: 'messageBack',
+                    text,
+                    displayText,
+                    value: data,
+                },
+            };
         }
 
         return action;
     }
-
-    public static loadCardElementJSON(pathToTemplate: string): any {
-        console.log(pathToTemplate)
-        let value = (require(pathToTemplate));
-        return JSON.parse(JSON.stringify(value));
-    }
-
-    public abstract render(): Attachment;
 }
 
 export type CardActionTypeName = 'Action.Submit' | 'Action.OpenUrl';
@@ -113,6 +107,7 @@ export interface ICardAction {
     id?: string;
     title: string;
     actionType: CardActionType;
+    type?: string;
     iconUrl?: string;
     data?: any;
     url?: string;
@@ -120,5 +115,5 @@ export interface ICardAction {
 
 export enum CardActionType {
     OpenUrl,
-    Submit
+    Submit,
 }
