@@ -3,7 +3,7 @@ const del = require('del');
 const exec = require('child_process').exec;
 const path = require('path');
 const nodemon = require('gulp-nodemon');
-const zip = require('gulp-zip');
+const gzip = require('gulp-zip');
 const argv = require('yargs').argv;
 
 //process.env.NODE_ENV = (argv.production) ? 'PRODUCTION' : 'DEVELOPMENT';
@@ -61,16 +61,22 @@ function serve(done) {
 exports.serve = gulp.series(build, serve);
 exports.serve.description = 'Builds the project, starts the server, and watches for changes.';
 
+/**
+ * Compresses all *.js files in the deployment folder.
+ */
+const zip = (done) => {
+    return gulp.src('./deployment/package/**/*.*')
+        .pipe(gzip('icd2-bot.zip', { compress: true }))
+        .pipe(gulp.dest('./deployment'));
+}
+exports.zip = zip;
+exports.zip.description = 'Compresses all *.js files in the deployment folder.';
+
 const package = (done) => {
     const files = ['./lib/**/*.*', './web.config', './package.json'];    
-
-    if (process.env.NODE_ENV === 'DEVELOPMENT') {
-        files.push('./icd2.env');
-        files.push('./benefits.env');
-    }
 
     return gulp.src(files)
     .pipe(gulp.dest('deployment/package'))
 }
 
-exports.package = gulp.series(build, package);
+exports.package = gulp.series(build, package, zip);

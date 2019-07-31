@@ -1,0 +1,39 @@
+{
+    "type": "Container",
+    "items": [
+        {
+            "type": "ColumnSet",
+            "selectAction": {
+                "type": "Action.Submit",
+                "id": "id",
+                "title": "[TITLE]",
+                "data": "[DATA]"
+            },
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "bolder",
+                            "text": "[CODE]"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "default",
+                            "text": "[DESCRIPTION]",
+                            "wrap": true
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        }
+    ]
+}

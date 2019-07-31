@@ -1,0 +1,53 @@
+{
+    "type": "Container",
+    "items": [
+        {
+            "type": "TextBlock",
+            "text": "Query for codes using the command **search codes**, then specifying keywords:",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "color": "Accent",
+            "text": "\tsearch codes edema orbit",
+            "isSubtle": true,
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "color": "Accent",
+            "text": "\tsearch codes obstruction newborn",
+            "isSubtle": true,
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "You can also search for *phrases* by closing in quotes:",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "color": "Accent",
+            "text": "\tsearch codes \"central nervous system\"",
+            "isSubtle": true,
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "You can also combine *keywords* and *phrases*:",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "color": "Accent",
+            "text": "\tsearch codes \"central nervous system\" neoplasm",
+            "isSubtle": true,
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "**Tip:** Use the alias *sc* in place of the *search codes* command as a shortcut.",
+            "wrap": true
+        }
+    ]
+}

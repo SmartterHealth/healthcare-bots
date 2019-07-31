@@ -3,6 +3,9 @@
   "version": "0.1.1",
   "description": "",
   "main": "index.js",
+  "config": {
+    "NODE_ENV": "production"
+  },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
@@ -16,14 +19,18 @@
     "gulp-nodemon": "^2.4.2",
     "gulp-zip": "^5.0.0",
     "ts-loader": "^6.0.4",
+    "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "webpack": "^4.37.0",
     "webpack-cli": "^3.3.6",
     "yargs": "^13.3.0"
   },
   "dependencies": {
-    "botbuilder": "^4.5.3",
+    "applicationinsights": "^1.4.0",
+    "botbuilder": "4.4.0",
     "botbuilder-ai": "^4.5.3",
+    "mssql": "^5.1.0",
+    "reflect-metadata": "^0.1.13",
     "restify": "^8.3.3"
   }
 }
