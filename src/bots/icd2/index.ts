@@ -10,11 +10,10 @@ import { CommandHandlerAdapter } from './commands/CommandHandlerAdapter';
 import { GetCodeCommandHandler } from './commands/get-code/GetCodeCommandHandler';
 import { HelpCommandHandler } from './commands/help/HelpCommandHandler';
 import { SearchCodesCommandHandler } from './commands/search-codes/SearchCodesCommandHandler';
+import { WelcomeCommandHandler } from './commands/welcome/WelcomeCommandHandler';
 import log from './logger';
 import settings from './settings';
 
-// import { log } from './logger';
-import { WelcomeCommandHandler } from './commands/welcome/WelcomeCommandHandler';
 appInsights.setup(settings.appInsights.instrumentationKey)
     .setAutoDependencyCorrelation(true)
     .setAutoCollectRequests(true)
@@ -104,7 +103,7 @@ export default class Icd2Bot extends ActivityHandler {
         });
     }
 
-    /** Sets the user ID for the current user. */
+    /** Sets the user ID for the current user in app insights. */
     private setUserId(context: TurnContext) {
         appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userAuthUserId] = context.activity.from.id;
         appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userAccountId] = context.activity.from.id;

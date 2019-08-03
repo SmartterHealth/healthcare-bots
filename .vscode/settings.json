@@ -1,4 +1,3 @@
 {
-    "appService.defaultWebAppToDeploy": "/subscriptions/cba9cf5c-8ebc-4a90-9224-d5fb1dabd281/resourceGroups/smartterhealth/providers/Microsoft.Web/sites/sh-bots-test",
     "appService.deploySubpath": "deployment/package"
 }
